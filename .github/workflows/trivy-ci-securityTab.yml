@@ -24,20 +24,20 @@ jobs:
       - name: Start Docker Compose services
         run: docker compose up -d
 
-      # Trivyでコンテナイメージをスキャン
+    # Trivyでコンテナイメージをスキャン
       - name: Run Trivy scan
         uses: aquasecurity/trivy-action@master
-        with: 
-            image-ref: 'ghcr.io/pentest001sec-io/awesometodo:d34d97c5a3b0c78ca8604c19cc27f255a6f9100d'
-            format: 'table'
-            ignore-unfixed: true
-            vuln-type: 'os,library'
-            severity: 'HIGH,CRITICAL'
-            output: 'trivy-report.txt'
-
-      # スキャンレポートをGitHub Actionsのアーティファクトとして保存
-      - name: Upload Trivy report
-        uses: actions/upload-artifact@v4
         with:
-          name: trivy-scan-report
-          path: trivy-report.txt
+          image-ref: 'ghcr.io/securistant/awesometodo:latest'
+          format: 'sarif'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'HIGH,CRITICAL'
+          output: 'trivy-results.sarif'
+
+    # スキャン結果をGitHubセキュリティタブにアップロード
+      - name: Upload Trivy report
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
