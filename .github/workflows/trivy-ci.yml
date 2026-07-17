@@ -30,7 +30,7 @@ jobs:
         with: 
             image-ref: 'ghcr.io/pentest001sec-io/awesometodo20260716:f0ddf19523c4c0f1df337dc87d9248144b39461a'
             format: 'table'
-            ignore-unfixed: true
+            # ignore-unfixed: true
             vuln-type: 'os,library'
             severity: 'HIGH,CRITICAL'
             output: 'trivy-report.txt'
